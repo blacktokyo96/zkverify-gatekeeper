@@ -182,14 +182,15 @@ To get a public HTTPS endpoint, one of these needs the user's login:
 
 ## Open questions (to confirm in practice mode)
 
-1. **Field mapping** — the site never documents how `taskId`
-   (`"gk_24_9d1"` string) and the 256-bit vk hashes map to circuit
-   field elements. This build uses `sha256(taskId) mod p` and
-   `BigInt(hex) mod p`. If practice mode rejects our proofs, this
-   mapping is the first thing to vary (alternatives: Poseidon hash,
-   raw ASCII bytes, truncated hash).
-2. **HMAC format** — assumed raw hex (`<hmac-sha256-hex>` per `/build`).
-   If preflight fails with a signature error, try `sha256=<hex>`.
+1. **Field mapping** — ✅ VALIDATED 14 Nov 2026 ~20:20 WIB by practice task
+   `practice_7657e096-d869-4b5f-849c-afbefd1b9ec6` (EXPIRED_CONDITION):
+   platform verdict CORRECT DECISION, proof VERIFIED. So `sha256(taskId)
+   mod p` and `BigInt(hex) mod p` are the right mapping — do not vary
+   them. (The site never documents the mapping; this practice result is
+   the evidence.)
+2. **HMAC format** — ✅ VALIDATED: raw hex works — preflight requests
+   (id b6faae1f-bb74-4cae-9b6e-079ef4c83de1) pass HMAC verification and
+   the practice task was accepted.
 3. **Kurier key** — optional but recommended; user signs up at
    kurier.xyz and provides the key via Secure Vault.
 4. **Expiry edge** — `current_block == expiry_block` is treated as
