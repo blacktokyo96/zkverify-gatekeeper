@@ -1,6 +1,9 @@
 app = "blacktokyo-gatekeeper"
 primary_region = "sin"
 
+[env]
+  PORT = "8080"
+
 [build]
 
 [http_service]
