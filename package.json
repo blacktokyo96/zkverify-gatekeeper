@@ -1,0 +1,16 @@
+{
+  "name": "zkverify-gatekeeper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node test/test-traps.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "snarkjs": "^0.7.5"
+  }
+}
