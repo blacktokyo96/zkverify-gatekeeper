@@ -211,7 +211,11 @@ To get a public HTTPS endpoint, one of these needs the user's login:
 4. **Practice mode** — run at least one practice task per trap type and
    confirm the platform accepts the proofs (this validates open
    question 1). If a proof is rejected, tell the agent the exact error
-   and it will adjust the field mapping.
+   and it will adjust the field mapping. NOTE (14 Nov, 7 tasks): practice
+   mode sends traps only — EXPIRED ×4, AMOUNT ×2, THRESHOLD ×1, never a
+   VALID_CONDITION. The approve path can only be validated live in a
+   scored round; it was first exercised in Round 3 (15 Nov 18:20 WIB,
+   VALID_CONDITION, proof 780 ms, answered cleanly).
 5. **Competition** — rounds 3–8 run 15–20 Nov, 17:30–03:30 WIB.
    Round 2 (14 Nov) is already missed; nothing to do about that.
 6. Optional: Kurier API key (kurier.xyz signup) for the on-chain
