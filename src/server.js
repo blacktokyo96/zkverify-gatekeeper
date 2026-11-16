@@ -11,7 +11,7 @@ const path = require("path");
 const { decide } = require("./decision");
 const { circuitInput } = require("./field");
 const { generateProof } = require("./prove");
-const { submitToKurier } = require("./kurier");
+const { submitToKurier, registerVk } = require("./kurier");
 
 const PORT = parseInt(process.env.PORT || "3000", 10);
 const HMAC_SECRET = process.env.AGENT_GAMES_HMAC_SECRET || "";
@@ -90,8 +90,8 @@ async function handleTask(env) {
       try {
         const sub = await submitToKurier(proof, publicSignals);
         if (sub.submitted && sub.proofTx) response.proof_tx = sub.proofTx;
-        if (sub.submitted) log({ task_id: taskId, kurier: "submitted", jobId: sub.jobId, proofTx: sub.proofTx, rawKeys: sub.raw ? Object.keys(sub.raw) : [] });
-        if (!sub.submitted) log({ task_id: taskId, kurier: sub.reason });
+        if (sub.submitted) log({ task_id: taskId, kurier: "submitted", jobId: sub.jobId, proofTx: sub.proofTx, txHash: sub.txHash || null, optimisticVerify: sub.optimisticVerify || null, jobStatus: sub.jobStatus || null });
+        if (!sub.submitted) log({ task_id: taskId, kurier: sub.reason, detail: sub.detail || null });
       } catch (e) {
         log({ task_id: taskId, kurier_error: String(e.message || e) });
       }
@@ -154,4 +154,9 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, "0.0.0.0", () => {
   log({ listening: PORT, hmac_configured: !!HMAC_SECRET, kurier_configured: !!process.env.KURIER_API_KEY });
+  // Register the gatekeeper vk with Kurier once (needs the key; harmless if
+  // it fails — each task retries lazily before submitting).
+  if (process.env.KURIER_API_KEY) {
+    registerVk().then((r) => log({ kurier_vk_register: r })).catch((e) => log({ kurier_vk_register_error: String(e.message || e) }));
+  }
 });
