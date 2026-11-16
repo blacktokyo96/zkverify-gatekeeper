@@ -90,6 +90,7 @@ async function handleTask(env) {
       try {
         const sub = await submitToKurier(proof, publicSignals);
         if (sub.submitted && sub.proofTx) response.proof_tx = sub.proofTx;
+        if (sub.submitted) log({ task_id: taskId, kurier: "submitted", jobId: sub.jobId, proofTx: sub.proofTx, rawKeys: sub.raw ? Object.keys(sub.raw) : [] });
         if (!sub.submitted) log({ task_id: taskId, kurier: sub.reason });
       } catch (e) {
         log({ task_id: taskId, kurier_error: String(e.message || e) });
